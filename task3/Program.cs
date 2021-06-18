@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 
 namespace task3
 {
@@ -6,7 +8,18 @@ namespace task3
     {
         private static void Main()
         {
-            //Создайте программу, в которой предоставьте пользователю доступ к сборке из Задания 2. Реализуйте использование метода конвертации значения температуры из шкалы Цельсия в шкалу Фаренгейта. Выполняя задание используйте только рефлексию.
+            try
+            {
+                var assembly = Assembly.Load("task2");
+                var type = assembly.GetType("task2.Program+MyClass");
+                dynamic myClassInstance = Activator.CreateInstance(type ?? throw new InvalidOperationException());
+                if (myClassInstance != null) myClassInstance.GetHashCode();
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
